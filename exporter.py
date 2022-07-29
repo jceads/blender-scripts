@@ -63,4 +63,6 @@ def get_all_variants():
         closeAllCollection()
         open_selected_and_export_coll(json_obj_list[index])
 
-get_all_variants()
+# get_all_variants() closed for test purpose
+
+export_model('test_object')
