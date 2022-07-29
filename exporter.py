@@ -23,7 +23,7 @@ def init_objects(armature_name,coll_name = 'rig_placement'):
 
 def set_parent():
     print('parenting to bone')
-    bpy.ops.object.parent_set(type='ARMATURE_AUTO',keep_transform=True)
+    bpy.ops.object.parent_set(type='ARMATURE_NAME',keep_transform=True)
     
 
 def select_objects(arma,others):
@@ -49,7 +49,7 @@ def make_parent(ARMATURE_NAME,collection_name):
     for item in temp_others_names:
         bpy.data.objects[item.name].select_set(True)
     bpy.context.view_layer.objects.active = arma
-    bpy.ops.object.parent_set(type='BONE',keep_transform=True)
+    bpy.ops.object.parent_set(type='ARMATURE_NAME',keep_transform=True)
             
 #*********************************************************************************************
 
@@ -65,7 +65,7 @@ def export_model(obj_name):
     print(f"exporting {obj_name}")
     filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
     temp_destination = f"C:/Users/jcead/desktop/{obj_name}.glb"
-    bpy.ops.export_scene.gltf(filepath=temp_destination,export_format = "GLB",ui_tab = "MESHES",use_visible=True)
+    bpy.ops.export_scene.gltf(filepath=filepath, export_format = "GLB", ui_tab = "MESHES", use_visible=True)
     print("exported")
     hide_and_clear_parent(target_will_hide=armature_name)
 
@@ -74,12 +74,13 @@ def hide_and_clear_parent(target_will_hide):
     if len(bpy.ops.object.select_all()) == 0:
         bpy.ops.object.select_all()
     bpy.ops.object.parent_clear(type='CLEAR')
+    bpy.data.objects[target_will_hide].hide_viewport = False
 
 
 def closeAllCollection():
     layers = bpy.context.layer_collection.children
-    for coll in layers:
-        coll.exclude = True
+    for index in range(1,len(layers)):
+        layers[index].exclude = True
     print("all collections closed")
 
 
@@ -115,8 +116,8 @@ def get_all_variants():
         closeAllCollection()
         open_selected_and_export_coll(json_obj_list[index])
 
-# get_all_variants() closed for test purpose
+get_all_variants()
 
-export_model('test_object')
+#export_model('test_object')
 
 
