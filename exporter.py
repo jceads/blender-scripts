@@ -49,7 +49,7 @@ def make_parent(ARMATURE_NAME,collection_name):
     for item in temp_others_names:
         bpy.data.objects[item.name].select_set(True)
     bpy.context.view_layer.objects.active = arma
-    bpy.ops.object.parent_set(type='ARMATURE_NAME',keep_transform=True)
+    bpy.ops.object.parent_set(type='ARMATURE_NAME')
             
 #*********************************************************************************************
 
@@ -65,7 +65,12 @@ def export_model(obj_name):
     print(f"exporting {obj_name}")
     filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
     temp_destination = f"C:/Users/jcead/desktop/{obj_name}.glb"
-    bpy.ops.export_scene.gltf(filepath=filepath, export_format = "GLB", ui_tab = "MESHES", use_visible=True)
+    bpy.ops.export_scene.gltf(filepath=filepath, export_format = "GLB",
+                              ui_tab = "MESHES",
+                              use_selection=True,
+                              export_draco_mesh_compression_enable=True,
+                              
+                              )
     print("exported")
     hide_and_clear_parent(target_will_hide=armature_name)
 
@@ -111,10 +116,15 @@ def getJsonFiles():
 
 def get_all_variants():
     """This is where generating starts"""
+    print('Starting')
     json_obj_list = getJsonFiles()
+    print('json file used')
     for index in range(0,len(json_obj_list)):
         closeAllCollection()
+        print('all collections closed')
         open_selected_and_export_coll(json_obj_list[index])
+        print('selected exported')
+        
 
 get_all_variants()
 
