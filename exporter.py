@@ -9,7 +9,7 @@ import rigger as rg
 def export_model(obj_name):
     # bpy.ops.object.select_all()
     # bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
-    make_parent()
+    rg.make_parent()
     print(f"exporting {obj_name}")
     filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
     bpy.ops.export_scene.gltf(filepath=filepath,export_format = "GLB",ui_tab = "MESHES",use_visible=True)
@@ -23,8 +23,6 @@ def hide_and_clear_parent():
     bpy.ops.object.select_all()
     bpy.ops.object.parent_clear(type='CLEAR')
 
-def make_parent():
-    rg.make_parent()
 
 def closeAllCollection():
     layers = bpy.context.layer_collection.children

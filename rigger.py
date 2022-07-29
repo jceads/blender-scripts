@@ -8,7 +8,7 @@ data = bpy.data
 selector = bpy.ops.object
 ARMATURE_NAME = 'Armature.001'
 
-def init_objects(armature_name,coll_name):
+def init_objects(armature_name,coll_name = 'test-area'):
     other_objects= []
     #searching armature and other objects collection. Will be in script_ignore
     for item in data.collections[coll_name].all_objects:
@@ -30,6 +30,6 @@ def select_arma(arma,others):
 
 
 def make_parent(ARMATURE_NAME):
-    armature, other_objects = init_objects()
+    armature, other_objects = init_objects(ARMATURE_NAME)
     select_arma(arma=armature,others=other_objects)
     
