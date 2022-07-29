@@ -7,8 +7,8 @@ import rigger as rg
 
 
 def export_model(obj_name):
-    bpy.ops.object.select_all()
-    bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
+    # bpy.ops.object.select_all()
+    # bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
     make_parent()
     print(f"exporting {obj_name}")
     filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
@@ -28,22 +28,20 @@ def make_parent():
 
 def closeAllCollection():
     layers = bpy.context.layer_collection.children
-    collections = layers
-    for coll in collections:
+    for coll in layers:
         coll.exclude = True
     print("all collections closed")
 
 
-# close all open once
 def open_selected_and_export_coll(json_ref):
     collections = bpy.context.layer_collection.children
     values = json_ref["NFT_Variants"].values()
-    for sub_coll in range(1,len(collections)):
+    for sub_coll in range(1,len(collections)):#ignores firs collection which is 'Script Ignore'
         for i in range(0,len(collections[sub_coll].children)):
             for value_key in values:
                 if value_key == collections[sub_coll].children[i].name:
-                    collections[sub_coll].children[i].exclude = False
-    export_model(json_ref["name"])
+                    collections[sub_coll].children[i].exclude = False #This object will be visible
+    export_model(json_ref["name"])#uses for only naming
     print("model exported")
 
 def getJsonFiles():
