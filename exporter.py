@@ -6,22 +6,73 @@ import os
 #exclude = false //açar
 
 
+#RIGGER.PY FILE
+
+context = bpy.context
+objects = bpy.data.objects
+data = bpy.data
+selector = bpy.ops.object
+ARMATURE_NAME = 'Armature.001'
+target_armature=None
+other_objects = None
+def init_objects(armature_name,coll_name = 'rig_placement'):
+    target_armature = bpy.data.objects[armature_name]
+    other_objects = bpy.data.objects
+    other_objects.remove(bpy.data.objects[armature_name])
+    return target_armature, other_objects
+
+def set_parent():
+    print('parenting to bone')
+    bpy.ops.object.parent_set(type='ARMATURE_AUTO',keep_transform=True)
+    
+
+def select_objects(arma,others):
+    vb = bpy.context.visible_objects
+    for item in vb:
+        item.select_set(True)
+    bpy.data.objects[arma.name].select_set(True)
+    # arma.select_set(True)
+    bpy.ops.object.parent_set(type='BONE',keep_transform=True)
+    
+    
+    print('selected arma')
+
+
+def make_parent(ARMATURE_NAME,collection_name):
+    # target_armature, other_objects = init_objects(ARMATURE_NAME,coll_name=collection_name)
+    # select_objects(arma=target_armature,others=other_objects)
+    
+    
+    arma = bpy.data.objects[ARMATURE_NAME]
+    
+    temp_others_names = bpy.context.visible_objects
+    for item in temp_others_names:
+        bpy.data.objects[item.name].select_set(True)
+    bpy.context.view_layer.objects.active = arma
+    bpy.ops.object.parent_set(type='BONE',keep_transform=True)
+            
+#*********************************************************************************************
+
+
 def export_model(obj_name):
     armature_name = 'Armature.001'
-    # bpy.ops.object.select_all()
-    # bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
+    so = bpy.context.selected_objects
+    if len(so) == 0:
+        bpy.ops.object.select_all()
+    bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
+    bpy.ops.object.select_all()
     make_parent(ARMATURE_NAME=armature_name,collection_name='rig_placement')
     print(f"exporting {obj_name}")
     filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
-    bpy.ops.export_scene.gltf(filepath=filepath,export_format = "GLB",ui_tab = "MESHES",use_visible=True)
+    temp_destination = f"C:/Users/jcead/desktop/{obj_name}.glb"
+    bpy.ops.export_scene.gltf(filepath=temp_destination,export_format = "GLB",ui_tab = "MESHES",use_visible=True)
     print("exported")
-    bpy.ops.object.select_all()
     hide_and_clear_parent(target_will_hide=armature_name)
 
 def hide_and_clear_parent(target_will_hide):
-    target_armature = 'target_will_hide'
-    bpy.data.objects[target_armature].hide_viewport = True
-    bpy.ops.object.select_all()
+    bpy.data.objects[target_will_hide].hide_viewport = True
+    if len(bpy.ops.object.select_all()) == 0:
+        bpy.ops.object.select_all()
     bpy.ops.object.parent_clear(type='CLEAR')
 
 
@@ -69,36 +120,3 @@ def get_all_variants():
 export_model('test_object')
 
 
-#RIGGER.PY FILE
-
-context = bpy.context
-objects = bpy.data.objects
-data = bpy.data
-selector = bpy.ops.object
-ARMATURE_NAME = 'Armature.001'
-
-def init_objects(armature_name,coll_name = 'rig_placement'):
-    other_objects= []
-    #searching armature and other objects collection. Will be in script_ignore
-    for item in data.collections[coll_name].all_objects:
-            other_objects.append(item)
-    print('all objects initialized')
-    return bpy.data.objects[armature_name], other_objects
-
-def set_parent():
-    print('parenting to bone')
-    selector.parent_set(type='ARMATURE_AUTO',keep_transform=True)
-    
-
-def select_arma(arma,others):
-    for item in others:
-        item.select_set(True)
-    
-    arma.select_set(True)
-    set_parent()
-
-
-def make_parent(ARMATURE_NAME,collection_name):
-    armature, other_objects = init_objects(ARMATURE_NAME,coll_name=collection_name)
-    select_arma(arma=armature,others=other_objects)
-    
