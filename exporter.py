@@ -2,7 +2,6 @@ import imp
 import json
 import bpy
 import os
-import time
 import rigger as rg
 #exclude = false //açar
 
@@ -12,7 +11,8 @@ def export_model(obj_name):
     bpy.ops.object.transform_apply(location=True,rotation=True,scale=True)
     make_parent()
     print(f"exporting {obj_name}")
-    bpy.ops.export_scene.gltf(filepath=f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb",export_format = "GLB",ui_tab = "MESHES",use_visible=True)
+    filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
+    bpy.ops.export_scene.gltf(filepath=filepath,export_format = "GLB",ui_tab = "MESHES",use_visible=True)
     print("exported")
     bpy.ops.object.select_all()
     hide_and_clear_parent()
@@ -33,7 +33,6 @@ def closeAllCollection():
         coll.exclude = True
     print("all collections closed")
 
-#closeAllCollection()
 
 # close all open once
 def open_selected_and_export_coll(json_ref):
@@ -49,7 +48,6 @@ def open_selected_and_export_coll(json_ref):
 
 def getJsonFiles():
     print("listdir: ",)
-#    C:\Users\jcead\Desktop\lidy\t-e7vD7ETppj\debug-test
     desktop_dir = "C:/Users/jcead/desktop/lidy/Blend_My_NFTs Output/Generated NFT Batches/Batch1/BMNFT_metaData/"
     temp = [pos_json for pos_json in os.listdir(desktop_dir) if pos_json.endswith(".json")]
     print("***********************")
@@ -63,8 +61,8 @@ def getJsonFiles():
     return json_obj_list
 
 def get_all_variants():
+    """This is where generating starts"""
     json_obj_list = getJsonFiles()
-    
     for index in range(0,len(json_obj_list)):
         closeAllCollection()
         open_selected_and_export_coll(json_obj_list[index])
