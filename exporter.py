@@ -9,8 +9,7 @@ def export_model(obj_name):
     if len(so) == 0:
         bpy.ops.object.select_all()
     print(f"exporting {obj_name}")
-    filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"
-    temp_destination = f"C:/Users/jcead/desktop/{obj_name}.glb"
+    filepath = f"C:/Users/jcead/desktop/BMNFT_output/{obj_name}.glb"#export edilecek klasörün var olması gerekiyor
     bpy.ops.export_scene.gltf(filepath=filepath, export_format = "GLB",
                               ui_tab = "MESHES",
                               use_visible=True,
@@ -39,7 +38,6 @@ def open_selected_and_export_coll(json_ref):
 
 def getJsonFiles():
     #generate edilecek json dosyalarının dosya yolu girilmelidir
-    print("listdir: ",)
     desktop_dir = "C:/Users/jcead/desktop/lidy/Blend_My_NFTs Output/Generated NFT Batches/Batch1/BMNFT_metaData/"
     temp = [pos_json for pos_json in os.listdir(desktop_dir) if pos_json.endswith(".json")]
     print("***********************")
