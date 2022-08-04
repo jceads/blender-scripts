@@ -26,6 +26,7 @@ def closeAllCollection():
 
 
 def open_selected_and_export_coll(json_ref):
+    """json dosyasından aldığı bilgiye göre blender sahnesinde koleksiyonu açar ve export eder"""
     collections = bpy.context.layer_collection.children
     values = json_ref["NFT_Variants"].values()
     for sub_coll in range(1,len(collections)):#ignores firs collection which is 'Script Ignore'
@@ -62,4 +63,5 @@ def get_all_variants():
         print('selected exported')
         
 
+#start point
 get_all_variants()
