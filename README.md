@@ -23,6 +23,7 @@ tercih edilen yerde oluşturulan klasörün içerisine generate eder
 blender ı ui açmadan çalıştırması gerekiyordu fakat çalışmıyor
 
 # File size reducer
+Klasörde olan png dosyalarının boyutunu düşürür
 Önkoşul:
 <ol>
 <li>
