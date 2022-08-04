@@ -1,13 +1,12 @@
 import os
 from urllib.request import install_opener
 import blender
-
-
-
 import subprocess
 import bpy
 import os
 
+#This file supposed to open blender without gui and export glb files 
+#!Not works
 blender_dir = "C:/users/jcead/desktop/blender"
 
 
